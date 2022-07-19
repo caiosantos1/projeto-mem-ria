@@ -109,12 +109,29 @@ int nru(int8_t** page_table, int num_pages, int prev_page,
             }
         }
     }
-
+    return 1;
 }
 
 int aging(int8_t** page_table, int num_pages, int prev_page,
           int fifo_frm, int num_frames, int clock) {
-    return -1;
+            int smal = 0, count = 0, posicao = 0;
+
+    while(count != num_pages){
+    	//verifica se o endereço está na tabela, se não estiver incrementa o count 
+        if(page_table[count][PT_MAPPED] == 0){
+        	count++;
+		}else{	
+            posicao ++;
+            if(posicao == 1) {
+                smal = count;
+            }
+            if(page_table[smal][PT_AGING_COUNTER] > page_table[count+1][PT_AGING_COUNTER]){
+                smal=count;
+            }
+            count++;
+        }
+    }
+    return smal;
 }
 
 int mfu(int8_t** page_table, int num_pages, int prev_page,
