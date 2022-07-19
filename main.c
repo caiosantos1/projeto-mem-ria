@@ -44,6 +44,12 @@ typedef struct {
 
 int fifo(int8_t** page_table, int num_pages, int prev_page,
          int fifo_frm, int num_frames, int clock) {
+            for (int i = 0; i < num_pages; i++)
+            {
+                if(page_table[i][PT_FRAMEID] == fifo_frm){
+                    return i;
+                }
+            }   
     return -1;
 }
 
