@@ -76,7 +76,18 @@ int second_chance(int8_t** page_table, int num_pages, int prev_page,
 
 int nru(int8_t** page_table, int num_pages, int prev_page,
         int fifo_frm, int num_frames, int clock) {
+             int i;
+             for(i = 0; i < num_pages; i++){
+    	// verifica se tem o endereço na tabela
+        if(page_table[i][PT_MAPPED] !=0){
+        	//verifica se o bit M e bit R são iguais a zero, se sim a página será removida
+            if(page_table[i][PT_REFERENCE_BIT] == 0 && page_table[i][PT_DIRTY] == 0){
+                return i;
+            }
+        }
+    }
 
+    
     return -1;
 }
 
