@@ -55,7 +55,25 @@ int fifo(int8_t** page_table, int num_pages, int prev_page,
 
 int second_chance(int8_t** page_table, int num_pages, int prev_page,
                   int fifo_frm, int num_frames, int clock) {
-    return -1;
+                    // percorre a tabela             	
+    for (int i = 0; i < num_pages; i++){
+    	for(int j = 0; j < num_pages; j++){
+    		//verifica se i e j estão no mesmo endereço de memoria 
+    	    if (page_table[j][PT_FRAMEID] == i){
+    	    	//verifica se o bit R=0, se sim, retorna a pagina que serávremovida
+    		    if (page_table[j][PT_REFERENCE_BIT] == 0){
+    		    	return j;
+                }else{
+                	//se não,a página terá uma segunda chance e atualiza o valor do bit R=0
+               	    page_table[j][PT_REFERENCE_BIT] = 0;
+               	   	//realiza a atualização da ultima pagina acessada
+    		        prev_page = j;
+    		        break;
+	         	}   		
+            }
+     	}
+    } 
+    return fifo(page_table, num_pages,prev_page, fifo_frm, num_frames, clock); 
 }
 
 int nru(int8_t** page_table, int num_pages, int prev_page,
