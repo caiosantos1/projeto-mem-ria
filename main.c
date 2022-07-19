@@ -86,9 +86,30 @@ int nru(int8_t** page_table, int num_pages, int prev_page,
             }
         }
     }
+    //para as outras páginas 
+    for(i = 0; i < num_pages; i++){
+        if(page_table[i][PT_MAPPED] !=0){
+            if(page_table[i][PT_REFERENCE_BIT] == 0 && page_table[i][PT_DIRTY] == 1){
+                return i;
+            }
+        }
+    }
 
-    
-    return -1;
+    for(i = 0; i < num_pages; i++){
+        if(page_table[i][PT_MAPPED] !=0){
+            if(page_table[i][PT_REFERENCE_BIT] == 1 && page_table[i][PT_DIRTY] == 0){
+                return i;
+            }
+        }
+    }
+    for(i = 0; i < num_pages; i++){
+        if(page_table[i][PT_MAPPED] !=0){
+            if(page_table[i][PT_REFERENCE_BIT] == 1 && page_table[i][PT_DIRTY] == 1){
+                return i;
+            }
+        }
+    }
+
 }
 
 int aging(int8_t** page_table, int num_pages, int prev_page,
